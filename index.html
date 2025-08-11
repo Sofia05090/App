@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Microlecturas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style id="app-style">
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f8f9fa;
+    }
+    
+    .content-text {
+      font-family: 'Merriweather', serif;
+    }
+    
+    .category-btn {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .category-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+    
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #fff;
+      border-bottom-color: #6366F1;
+      border-radius: 50%;
+      display: inline-block;
+      box-sizing: border-box;
+      animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .slide-in {
+      animation: slideIn 0.3s forwards;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .star-animation {
+      animation: starPulse 0.5s;
+    }
+    
+    @keyframes starPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div id="app" class="max-w-full sm:max-w-md lg:max-w-lg mx-auto min-h-screen bg-white shadow-lg">
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white p-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold">Microlecturas</h1>
+      <div class="hidden sm:flex space-x-4">
+        <button id="home-btn" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition-all">
+          <i class="fas fa-home"></i>
+        </button>
+        <button id="favorites-btn" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition-all">
+          <i class="fas fa-bookmark"></i>
+        </button>
+        <button id="settings-btn" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition-all">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="p-4 sm:p-6 lg:p-8">
+      <!-- Welcome Screen -->
+      <div id="welcome-screen" class="fade-in transition-opacity duration-300">
+        <div class="text-center mb-8">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">¡Bienvenido a Microlecturas!</h2>
+          <p class="text-gray-600">Aprende algo nuevo en menos de un minuto</p>
+        </div>
+        
+        <!-- Categorías Móvil -->
+<div class="sm:hidden flex flex-col gap-4 pb-4 mb-6">
+  <button data-category="filosofia" class="category-btn bg-gradient-to-br from-pink-500 to-red-500 text-white rounded-lg p-5 text-center shadow-md">
+    <i class="fas fa-brain text-3xl mb-2"></i>
+    <h3 class="font-semibold">Filosofía</h3>
+  </button>
+  <button data-category="literatura" class="category-btn bg-gradient-to-br from-purple-500 to-indigo-500 text-white rounded-lg p-5 text-center shadow-md">
+    <i class="fas fa-book text-3xl mb-2"></i>
+    <h3 class="font-semibold">Literatura</h3>
+  </button>
+  <button data-category="ciencia" class="category-btn bg-gradient-to-br from-teal-400 to-green-500 text-white rounded-lg p-5 text-center shadow-md">
+    <i class="fas fa-flask text-3xl mb-2"></i>
+    <h3 class="font-semibold">Ciencia</h3>
+  </button>
+  <button data-category="historia" class="category-btn bg-gradient-to-br from-yellow-400 to-orange-500 text-white rounded-lg p-5 text-center shadow-md">
+    <i class="fas fa-landmark text-3xl mb-2"></i>
+    <h3 class="font-semibold">Historia</h3>
+  </button>
+</div>
+        
+        <!-- Desktop/Tablet Grid -->
+        <div class="hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+          <button data-category="filosofia" class="category-btn bg-gradient-to-br from-pink-500 to-red-500 text-white rounded-lg p-5 text-center shadow-md">
+            <i class="fas fa-brain text-3xl mb-2"></i>
+            <h3 class="font-semibold">Filosofía</h3>
+          </button>
+          
+          <button data-category="literatura" class="category-btn bg-gradient-to-br from-purple-500 to-indigo-500 text-white rounded-lg p-5 text-center shadow-md">
+            <i class="fas fa-book text-3xl mb-2"></i>
+            <h3 class="font-semibold">Literatura</h3>
+          </button>
+          
+          <button data-category="ciencia" class="category-btn bg-gradient-to-br from-teal-400 to-green-500 text-white rounded-lg p-5 text-center shadow-md">
+            <i class="fas fa-flask text-3xl mb-2"></i>
+            <h3 class="font-semibold">Ciencia</h3>
+          </button>
+          
+          <button data-category="historia" class="category-btn bg-gradient-to-br from-yellow-400 to-orange-500 text-white rounded-lg p-5 text-center shadow-md">
+            <i class="fas fa-landmark text-3xl mb-2"></i>
+            <h3 class="font-semibold">Historia</h3>
+          </button>
+        </div>
+        
+        <div class="text-center text-sm text-gray-500">
+          <p>Selecciona una categoría para comenzar</p>
+        </div>
+      </div>
+      
+      <!-- Loading Screen -->
+      <div id="loading-screen" class="hidden h-60 flex flex-col items-center justify-center transition-opacity duration-300">
+        <span class="loader mb-4"></span>
+        <p class="text-gray-600">Cargando tu microlectura...</p>
+      </div>
+      
+      <!-- Error Screen -->
+      <div id="error-screen" class="hidden text-center p-8 transition-opacity duration-300">
+        <i class="fas fa-exclamation-circle text-red-500 text-5xl mb-4"></i>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">¡Ups! Algo salió mal</h3>
+        <p class="text-gray-600 mb-4">No pudimos cargar la microlectura</p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-2">
+          <button id="retry-btn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+            Intentar de nuevo
+          </button>
+          <button class="back-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+      
+      <!-- Reading Screen -->
+      <div id="reading-screen" class="hidden fade-in transition-opacity duration-300 w-full">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex items-center">
+            <button class="back-btn mr-2 text-indigo-600">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm" id="category-label">Categoría</div>
+          </div>
+          <button id="favorite-toggle" class="text-gray-400 hover:text-yellow-500 transition-colors">
+            <i class="far fa-star text-xl"></i>
+          </button>
+        </div>
+        
+        <div class="bg-white w-full rounded-lg p-4 sm:p-6 shadow-sm border border-gray-100 mb-6">
+          <h3 id="reading-title" class="text-xl font-bold text-gray-900 mb-3">Título de la microlectura</h3>
+          <p id="reading-content" class="content-text text-gray-700 leading-relaxed">El contenido de la microlectura aparecerá aquí. Este será un texto breve, de entre 50 y 150 palabras, diseñado para ser leído en menos de un minuto.</p>
+        </div>
+        
+        <!-- Challenge Section -->
+        <div id="challenge-section" class="slide-in bg-indigo-50 rounded-lg p-4 sm:p-5 border border-indigo-100 w-full">
+          <h4 class="font-semibold text-indigo-800 mb-3">Reto rápido</h4>
+          <div id="question" class="mb-4">¿Pregunta relacionada con la lectura?</div>
+          
+          <div id="quiz-options" class="space-y-2 mb-4">
+            <!-- Quiz options will be generated here -->
+          </div>
+          
+          <div id="result-feedback" class="hidden mb-4 p-3 rounded-md"></div>
+          
+          <div class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-2">
+            <button id="submit-answer" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition w-full sm:w-auto">
+              Verificar respuesta
+            </button>
+            <button id="next-reading" class="hidden bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition w-full sm:w-auto">
+              Siguiente lectura <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Favorites Screen -->
+      <div id="favorites-screen" class="hidden fade-in transition-opacity duration-300">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-800">Mis favoritos</h2>
+          <button id="back-from-favorites" class="text-indigo-600">
+            <i class="fas fa-arrow-left"></i> Volver
+          </button>
+        </div>
+        
+        <div id="favorites-list" class="space-y-3">
+          <!-- Favorites will be listed here -->
+          <div class="empty-favorites text-center p-8 text-gray-500">
+            <i class="far fa-bookmark text-3xl mb-3"></i>
+            <p>No tienes microlecturas guardadas</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Settings Screen -->
+      <div id="settings-screen" class="hidden fade-in transition-opacity duration-300">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-800">Ajustes</h2>
+          <button class="back-btn text-indigo-600">
+            <i class="fas fa-arrow-left"></i> Volver
+          </button>
+        </div>
+        <!-- Settings content here -->
+        <div class="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-100">
+          <p class="text-gray-600 text-center">Configuración de la aplicación</p>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Bottom Navigation for Mobile -->
+    <nav class="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-2">
+      <button id="home-nav-btn" class="flex flex-col items-center p-2 text-indigo-600">
+        <i class="fas fa-home text-xl"></i>
+        <span class="text-xs mt-1">Inicio</span>
+      </button>
+      <button id="favorites-nav-btn" class="flex flex-col items-center p-2 text-gray-500">
+        <i class="fas fa-bookmark text-xl"></i>
+        <span class="text-xs mt-1">Favoritos</span>
+      </button>
+      <button id="settings-nav-btn" class="flex flex-col items-center p-2 text-gray-500">
+        <i class="fas fa-cog text-xl"></i>
+        <span class="text-xs mt-1">Ajustes</span>
+      </button>
+    </nav>
+  </div>
+
+  <script id="app-script">
+    document.addEventListener('DOMContentLoaded', () => {
+      // App state
+      const appState = {
+        currentReading: null,
+        currentCategory: null,
+        favorites: JSON.parse(localStorage.getItem('favorites')) || [],
+        completedChallenges: JSON.parse(localStorage.getItem('completedChallenges')) || []
+      };
+      
+      // DOM Elements
+      const screens = {
+        welcome: document.getElementById('welcome-screen'),
+        loading: document.getElementById('loading-screen'),
+        error: document.getElementById('error-screen'),
+        reading: document.getElementById('reading-screen'),
+        favorites: document.getElementById('favorites-screen'),
+        settings: document.getElementById('settings-screen')
+      };
+      
+      const elements = {
+        categoryButtons: document.querySelectorAll('.category-btn'),
+        retryButton: document.getElementById('retry-btn'),
+        favoritesButton: document.getElementById('favorites-btn'),
+        backButtons: document.querySelectorAll('.back-btn'),
+        backFromFavoritesButton: document.getElementById('back-from-favorites'),
+        favoriteToggle: document.getElementById('favorite-toggle'),
+        submitAnswerButton: document.getElementById('submit-answer'),
+        nextReadingButton: document.getElementById('next-reading'),
+        categoryLabel: document.getElementById('category-label'),
+        readingTitle: document.getElementById('reading-title'),
+        readingContent: document.getElementById('reading-content'),
+        question: document.getElementById('question'),
+        quizOptions: document.getElementById('quiz-options'),
+        resultFeedback: document.getElementById('result-feedback'),
+        favoritesList: document.getElementById('favorites-list'),
+        homeNavBtn: document.getElementById('home-nav-btn'),
+        favoritesNavBtn: document.getElementById('favorites-nav-btn'),
+        settingsNavBtn: document.getElementById('settings-nav-btn'),
+        homeBtn: document.getElementById('home-btn'),
+        settingsBtn: document.getElementById('settings-btn')
+      };
+      
+      // Show screen function
+      function showScreen(screenId) {
+        Object.values(screens).forEach(screen => {
+          screen.classList.add('hidden');
+        });
+        screens[screenId].classList.remove('hidden');
+        
+        // Update active nav button
+        document.querySelectorAll('nav button').forEach(btn => btn.classList.replace('text-indigo-600', 'text-gray-500'));
+        if (screenId === 'welcome') {
+          elements.homeNavBtn?.classList.replace('text-gray-500', 'text-indigo-600');
+        } else if (screenId === 'favorites') {
+          elements.favoritesNavBtn?.classList.replace('text-gray-500', 'text-indigo-600');
+        } else if (screenId === 'settings') {
+          elements.settingsNavBtn?.classList.replace('text-gray-500', 'text-indigo-600');
+        }
+      }
+      
+      // Fetch a reading from a category
+      async function fetchReading(category) {
+        showScreen('loading');
+        
+        try {
+          // In a real app, this would be an API call
+          // For the prototype, we'll simulate the response with static data
+          const readings = {
+            filosofia: {
+              id: 'fil1',
+              title: 'El Mito de Sísifo',
+              content: 'Albert Camus utilizó el mito de Sísifo como metáfora del esfuerzo inútil y repetitivo del hombre. Sísifo, condenado a empujar eternamente una roca hasta la cima de una montaña, solo para verla caer y comenzar de nuevo, representa la condición humana. Camus concluye que debemos imaginar a Sísifo feliz, pues encuentra sentido en su lucha misma, no en el resultado.',
+              challenge: {
+                question: '¿Qué representa el mito de Sísifo según Camus?',
+                options: [
+                  'La libertad humana',
+                  'La condición humana y el esfuerzo continuo',
+                  'La búsqueda de riqueza material',
+                  'El temor a la muerte'
+                ],
+                answer: 1
+              }
+            },
+            literatura: {
+              id: 'lit1',
+              title: 'El realismo mágico',
+              content: 'El realismo mágico, popularizado por Gabriel García Márquez, es un estilo narrativo donde elementos fantásticos aparecen en un entorno realista. En "Cien años de soledad", mariposas amarillas siguen a un personaje y una mujer asciende al cielo mientras tiende sábanas. Lo extraordinario se presenta como ordinario, reflejando la peculiar realidad latinoamericana donde lo cotidiano y lo mágico coexisten.',
+              challenge: {
+                question: '¿Cuál es la característica principal del realismo mágico?',
+                options: [
+                  'Narrativa completamente fantasiosa',
+                  'Elementos fantásticos presentados como ordinarios',
+                  'Historias basadas únicamente en hechos reales',
+                  'Textos con enfoque puramente político'
+                ],
+                answer: 1
+              }
+            },
+            ciencia: {
+              id: 'cie1',
+              title: 'Los agujeros negros',
+              content: 'Los agujeros negros son regiones del espacio donde la gravedad es tan extrema que ni siquiera la luz puede escapar. Se forman cuando estrellas masivas colapsan bajo su propio peso. Su existencia fue predicha por la teoría de relatividad de Einstein, pero fueron considerados objetos teóricos hasta 2019, cuando el Telescopio de Horizonte de Eventos capturó la primera imagen de uno en la galaxia M87.',
+              challenge: {
+                question: '¿Por qué no se puede ver directamente un agujero negro?',
+                options: [
+                  'Porque son demasiado pequeños',
+                  'Porque están muy lejos',
+                  'Porque su gravedad no permite que la luz escape',
+                  'Porque son transparentes'
+                ],
+                answer: 2
+              }
+            },
+            historia: {
+              id: 'his1',
+              title: 'La biblioteca de Alejandría',
+              content: 'La Biblioteca de Alejandría, fundada a principios del siglo III a.C., fue el centro de conocimiento más importante del mundo antiguo. Llegó a albergar hasta 700.000 manuscritos de matemáticas, astronomía, literatura, medicina y otras disciplinas. Su destrucción, que ocurrió gradualmente entre incendios y conflictos religiosos, simboliza una de las mayores pérdidas culturales de la humanidad.',
+              challenge: {
+                question: '¿Cuál era la principal función de la Biblioteca de Alejandría?',
+                options: [
+                  'Ser un templo religioso',
+                  'Funcionar como sede del gobierno',
+                  'Preservar y difundir el conocimiento',
+                  'Servir como fortaleza militar'
+                ],
+                answer: 2
+              }
+            }
+          };
+          
+          // Simulate network delay
+          await new Promise(resolve => setTimeout(resolve, 800));
+          
+          if (readings[category]) {
+            appState.currentReading = readings[category];
+            appState.currentCategory = category;
+            displayReading(readings[category], category);
+            showScreen('reading');
+          } else {
+            throw new Error('Categoría no encontrada');
+          }
+          
+        } catch (error) {
+          console.error('Error fetching reading:', error);
+          showScreen('error');
+        }
+      }
+      
+      // Display a reading
+      function displayReading(reading, category) {
+        // Set category label
+        const categoryLabels = {
+          filosofia: { text: 'Filosofía', color: 'bg-red-100 text-red-700' },
+          literatura: { text: 'Literatura', color: 'bg-purple-100 text-purple-700' },
+          ciencia: { text: 'Ciencia', color: 'bg-green-100 text-green-700' },
+          historia: { text: 'Historia', color: 'bg-yellow-100 text-yellow-700' }
+        };
+        
+        elements.categoryLabel.textContent = categoryLabels[category].text;
+        elements.categoryLabel.className = `px-3 py-1 rounded-full text-sm ${categoryLabels[category].color}`;
+        
+        // Set reading content
+        elements.readingTitle.textContent = reading.title;
+        elements.readingContent.textContent = reading.content;
+        
+        // Set challenge question
+        elements.question.textContent = reading.challenge.question;
+        
+        // Generate options
+        elements.quizOptions.innerHTML = '';
+        reading.challenge.options.forEach((option, index) => {
+          const optionElement = document.createElement('div');
+          optionElement.className = 'flex items-center space-x-3 p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer';
+          optionElement.dataset.index = index;
+          optionElement.innerHTML = `
+            <div class="w-6 h-6 flex items-center justify-center rounded-full border-2 border-gray-300">
+              <span class="option-check hidden text-white">✓</span>
+            </div>
+            <div>${option}</div>
+          `;
+          elements.quizOptions.appendChild(optionElement);
+        });
+        
+        // Set favorite button state
+        const isFavorite = appState.favorites.some(fav => fav.id === reading.id);
+        if (isFavorite) {
+          elements.favoriteToggle.innerHTML = '<i class="fas fa-star text-yellow-500 text-xl"></i>';
+        } else {
+          elements.favoriteToggle.innerHTML = '<i class="far fa-star text-xl"></i>';
+        }
+        
+        // Reset challenge state
+        elements.resultFeedback.classList.add('hidden');
+        elements.submitAnswerButton.classList.remove('hidden');
+        elements.nextReadingButton.classList.add('hidden');
+        
+        // Clear any selected option
+        document.querySelectorAll('#quiz-options .option-check').forEach(check => {
+          check.classList.add('hidden');
+          check.closest('div.flex').classList.remove('bg-indigo-50', 'border-indigo-300');
+        });
+      }
+      
+      // Toggle favorite
+      function toggleFavorite() {
+        if (!appState.currentReading) return;
+        
+        const isFavorite = appState.favorites.some(fav => fav.id === appState.currentReading.id);
+        
+        if (isFavorite) {
+          // Remove from favorites
+          appState.favorites = appState.favorites.filter(fav => fav.id !== appState.currentReading.id);
+          elements.favoriteToggle.innerHTML = '<i class="far fa-star text-xl"></i>';
+        } else {
+          // Add to favorites
+          appState.favorites.push({
+            id: appState.currentReading.id,
+            title: appState.currentReading.title,
+            content: appState.currentReading.content.substring(0, 70) + '...',
+            category: appState.currentCategory
+          });
+          
+          elements.favoriteToggle.innerHTML = '<i class="fas fa-star text-yellow-500 text-xl star-animation"></i>';
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('favorites', JSON.stringify(appState.favorites));
+      }
+      
+      // Submit answer
+      function submitAnswer() {
+        const selectedOption = document.querySelector('#quiz-options div.bg-indigo-50');
+        
+        if (!selectedOption) {
+          alert('Por favor selecciona una respuesta');
+          return;
+        }
+        
+        const selectedIndex = parseInt(selectedOption.dataset.index);
+        const correctIndex = appState.currentReading.challenge.answer;
+        
+        if (selectedIndex === correctIndex) {
+          // Correct answer
+          elements.resultFeedback.textContent = '¡Correcto! Muy bien.';
+          elements.resultFeedback.className = 'mb-4 p-3 rounded-md bg-green-100 text-green-800';
+          
+          // Mark challenge as completed
+          if (!appState.completedChallenges.includes(appState.currentReading.id)) {
+            appState.completedChallenges.push(appState.currentReading.id);
+            localStorage.setItem('completedChallenges', JSON.stringify(appState.completedChallenges));
+          }
+        } else {
+          // Wrong answer
+          elements.resultFeedback.textContent = 'Incorrecto. ¡Inténtalo de nuevo!';
+          elements.resultFeedback.className = 'mb-4 p-3 rounded-md bg-red-100 text-red-800';
+        }
+        
+        elements.resultFeedback.classList.remove('hidden');
+        elements.submitAnswerButton.classList.add('hidden');
+        elements.nextReadingButton.classList.remove('hidden');
+      }
+      
+      // Update favorites list
+      function updateFavoritesList() {
+        elements.favoritesList.innerHTML = '';
+        
+        if (appState.favorites.length === 0) {
+          elements.favoritesList.innerHTML = `
+            <div class="text-center p-8 text-gray-500">
+              <i class="far fa-bookmark text-3xl mb-3"></i>
+              <p>No tienes microlecturas guardadas</p>
+            </div>
+          `;
+          return;
+        }
+        
+        const categoryColors = {
+          filosofia: 'bg-red-500',
+          literatura: 'bg-purple-500',
+          ciencia: 'bg-green-500',
+          historia: 'bg-yellow-500'
+        };
+        
+        appState.favorites.forEach(favorite => {
+          const favoriteElement = document.createElement('div');
+          favoriteElement.className = 'bg-white rounded-lg p-4 shadow-sm border border-gray-100 flex items-start space-x-3';
+          favoriteElement.dataset.id = favorite.id;
+          
+          favoriteElement.innerHTML = `
+            <div class="${categoryColors[favorite.category]} w-3 h-3 rounded-full mt-2"></div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-gray-900">${favorite.title}</h4>
+              <p class="text-sm text-gray-600">${favorite.content}</p>
+            </div>
+            <button class="remove-favorite text-gray-400 hover:text-red-500">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+          
+          elements.favoritesList.appendChild(favoriteElement);
+        });
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-favorite').forEach(button => {
+          button.addEventListener('click', (e) => {
+            const id = e.target.closest('[data-id]').dataset.id;
+            appState.favorites = appState.favorites.filter(fav => fav.id !== id);
+            localStorage.setItem('favorites', JSON.stringify(appState.favorites));
+            updateFavoritesList();
+          });
+        });
+      }
+      
+      // Event Listeners
+      elements.categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const category = button.dataset.category;
+          fetchReading(category);
+        });
+      });
+      
+      elements.retryButton.addEventListener('click', () => {
+        if (appState.currentCategory) {
+          fetchReading(appState.currentCategory);
+        } else {
+          showScreen('welcome');
+        }
+      });
+      
+      elements.favoritesButton.addEventListener('click', () => {
+        updateFavoritesList();
+        showScreen('favorites');
+      });
+      
+      elements.backFromFavoritesButton.addEventListener('click', () => {
+        if (appState.currentReading) {
+          showScreen('reading');
+        } else {
+          showScreen('welcome');
+        }
+      });
+      
+      elements.favoriteToggle.addEventListener('click', toggleFavorite);
+      
+      elements.quizOptions.addEventListener('click', (e) => {
+        const optionElement = e.target.closest('#quiz-options > div');
+        if (!optionElement) return;
+        
+        // Clear previous selection
+        document.querySelectorAll('#quiz-options > div').forEach(option => {
+          option.classList.remove('bg-indigo-50', 'border-indigo-300');
+          option.querySelector('.option-check').classList.add('hidden');
+        });
+        
+        // Mark new selection
+        optionElement.classList.add('bg-indigo-50', 'border-indigo-300');
+        optionElement.querySelector('.option-check').classList.remove('hidden');
+      });
+      
+      elements.submitAnswerButton.addEventListener('click', submitAnswer);
+      
+      elements.nextReadingButton.addEventListener('click', () => {
+        fetchReading(appState.currentCategory);
+      });
+
+      // Add new event listeners for navigation
+      elements.backButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          showScreen('welcome');
+        });
+      });
+      
+      elements.homeNavBtn?.addEventListener('click', () => {
+        showScreen('welcome');
+      });
+      
+      elements.favoritesNavBtn?.addEventListener('click', () => {
+        updateFavoritesList();
+        showScreen('favorites');
+      });
+      
+      elements.settingsNavBtn?.addEventListener('click', () => {
+        showScreen('settings');
+      });
+      
+      elements.homeBtn?.addEventListener('click', () => {
+        showScreen('welcome');
+      });
+      
+      elements.settingsBtn?.addEventListener('click', () => {
+        showScreen('settings');
+      });
+    });
+  </script>
+</body>
+</html>
+
