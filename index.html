@@ -205,6 +205,15 @@
           <button id="favorite-toggle" class="text-gray-400 hover:text-yellow-500 transition-colors">
             <i class="far fa-star text-xl"></i>
           </button>
+          <div id="reading-screen" class="hidden px-4 py-6">
+              <button onclick="goBack()" class="text-blue-600 hover:text-blue-800 mb-4">
+                <i class="fas fa-arrow-left"></i> Volver
+              </button>
+              <h2 id="book-title" class="text-2xl font-bold mb-2"></h2>
+              <p id="book-author" class="text-gray-600 mb-4"></p>
+              <div id="book-content" class="whitespace-pre-line"></div>
+            </div>
+
         </div>
         
         <div class="bg-white w-full rounded-lg p-4 sm:p-6 shadow-sm border border-gray-100 mb-6">
@@ -681,5 +690,6 @@
   </script>
 </body>
 </html>
+
 
 
