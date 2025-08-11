@@ -73,6 +73,28 @@
       50% { transform: scale(1.5); }
       100% { transform: scale(1); }
     }
+
+    /* Scroll solo para la pantalla de lectura */
+#reading-screen {
+  max-height: calc(100vh - 120px); /* deja espacio para encabezado y márgenes */
+  overflow-y: auto;
+  padding-bottom: 1rem;
+  scroll-behavior: smooth;
+}
+
+/* Personalización del scroll */
+#reading-screen::-webkit-scrollbar {
+  width: 6px;
+}
+
+#reading-screen::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.3);
+  border-radius: 3px;
+}
+
+#reading-screen::-webkit-scrollbar-track {
+  background: transparent;
+}
   </style>
 </head>
 <body class="bg-gray-50">
@@ -659,4 +681,5 @@
   </script>
 </body>
 </html>
+
 
